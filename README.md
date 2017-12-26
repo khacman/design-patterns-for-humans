@@ -12,8 +12,8 @@ A topic that can easily make anyone's mind wobble. Here I try to make them stick
 
 ***
 
-<p align="center"><b> Did you like this guide and want more of the similar content? </b><br>Subscribe for the launch of <a href="http://hugobots.com">Hugobots</a> or <a href="http://twitter.com/kamranahmedse">follow me on twitter</a>!</p>
-
+<p align="center"><b> Did you know this guide was originally written in PHP and is transformed to JavaScript by <a href="https://twitter.com/khacmanle">Khắc Mẫn</a>? </b><br></p>
+<p align="center"><b> Did you like this guide and want more of the similar content? </b><br>Subscribe for the launch of <a href="http://hugobots.com">Hugobots</a> or <a href="http://twitter.com/kamranahmedse">follow kamranahmedse on twitter</a>!</p>
 ***
 
 🚀 Introduction
@@ -2284,9 +2284,9 @@ And that about wraps it up. I will continue to improve this, so you might want t
 - Spread the word
 - Reach out with any feedback [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/kamranahmedse.svg?style=social&label=Follow%20%40kamranahmedse)](https://twitter.com/kamranahmedse)
 
-## Sponsored By
+## Rewritten By
 
-- [Highig - Think and its done](http://highig.com/)
+- [Le Khac Man](https://twitter.com/khacmanle)
 
 ## License
 
