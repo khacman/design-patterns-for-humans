@@ -345,10 +345,8 @@ Wikipedia says
 
 Having said that let me add a bit about what telescoping constructor anti-pattern is. At one point or the other we have all seen a constructor like below:
 
-```php
-public function __construct($size, $cheese = true, $pepperoni = true, $tomato = false, $lettuce = true)
-{
-}
+```javascript
+constructor(size, cheese = true, pepperoni = true, tomato = false, lettuce = true) {}
 ```
 
 As you can see; the number of constructor parameters can quickly get out of hand and it might become difficult to understand the arrangement of parameters. Plus this parameter list could keep on growing if you would want to add more options in future. This is called telescoping constructor anti-pattern.
@@ -357,82 +355,74 @@ As you can see; the number of constructor parameters can quickly get out of hand
 
 The sane alternative is to use the builder pattern. First of all we have our burger that we want to make
 
-```php
-class Burger
-{
-    protected $size;
-
-    protected $cheese = false;
-    protected $pepperoni = false;
-    protected $lettuce = false;
-    protected $tomato = false;
-
-    public function __construct(BurgerBuilder $builder)
-    {
-        $this->size = $builder->size;
-        $this->cheese = $builder->cheese;
-        $this->pepperoni = $builder->pepperoni;
-        $this->lettuce = $builder->lettuce;
-        $this->tomato = $builder->tomato;
+```javascript
+class Burger {
+    
+    constructor(burger) {
+        if (!(burger instanceof BurgerBuilder)) {
+            throw new TypeError("Param must be a BurgerBuilder");
+        }
+        
+        this.size = burger.size;
+        this.cheese = burger.cheese || false;
+        this.pepperoni = burger.pepperoni || false;
+        this.lettuce = burger.lettuce || false;
+        this.tomato = burger.tomato || false;
     }
+    
 }
 ```
 
 And then we have the builder
 
-```php
-class BurgerBuilder
-{
-    public $size;
-
-    public $cheese = false;
-    public $pepperoni = false;
-    public $lettuce = false;
-    public $tomato = false;
-
-    public function __construct(int $size)
-    {
-        $this->size = $size;
+```javascript
+class BurgerBuilder {
+    
+    constructor(size) {
+        if (!size) {
+            throw new Error("Burger size is required");
+        }
+        this.size = size;
+        this.cheese = false;
+        this.pepperoni = false;
+        this.lettuce = false;
+        this.tomato = false;
     }
-
-    public function addPepperoni()
-    {
-        $this->pepperoni = true;
-        return $this;
+    
+    addPepperoni() {
+        this.pepperoni = true;
+        return this;
     }
-
-    public function addLettuce()
-    {
-        $this->lettuce = true;
-        return $this;
+    
+    addLettuce() {
+        this.lettuce = true;
+        return this;
     }
-
-    public function addCheese()
-    {
-        $this->cheese = true;
-        return $this;
+    
+    addCheese() {
+        this.cheese = true;
+        return this;
     }
-
-    public function addTomato()
-    {
-        $this->tomato = true;
-        return $this;
+    
+    addTomato() {
+        this.tomato = true;
+        return this;
     }
-
-    public function build(): Burger
-    {
-        return new Burger($this);
+    
+    build() {
+        return new Burger(this);
     }
+    
 }
 ```
 And then it can be used as:
 
-```php
-$burger = (new BurgerBuilder(14))
-                    ->addPepperoni()
-                    ->addLettuce()
-                    ->addTomato()
-                    ->build();
+```javascript
+const burger = new BurgerBuilder(14)
+                                    .addPepperoni()
+                                    .addCheese()
+                                    .build();
+console.log(burger);
 ```
 
 **When to use?**
