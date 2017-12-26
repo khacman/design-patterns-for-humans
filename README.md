@@ -483,7 +483,7 @@ console.log(original.getName()); // Jolly
 console.log(original.getCategory()); // Mountain Sheep
 ```
 
-Also you could use the magic method `__clone` to modify the cloning behavior.
+If you want to understand the mechanism behind Object.create() magic, checkout [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create).
 
 **When to use?**
 
