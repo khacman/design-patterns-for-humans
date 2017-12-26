@@ -74,30 +74,37 @@ Wikipedia says
 First of all we have a door interface and the implementation
 ```javascript
 class Door {
+    
     constructor(width, height) {
         this.width = width;
         this.height = height;
     }
+    
     getWidth() {
         return this.width;
     }
+    
     getHeight() {
         return this.height;
     }
 }
 
 class WoodenDoor extends Door {
+    
     constructor(width, height) {
         super(width, height);
     }
+    
 }
 ```
 Then we have our door factory that makes the door and returns it
 ```javascript
 class doorFactory {
+    
     static makeWoodenDoor(w, h) {
         return new WoodenDoor(w, h);
     }
+    
 }
 ```
 And then it can be used as
@@ -127,72 +134,81 @@ Wikipedia says
 
 Taking our hiring manager example above. First of all we have an interviewer interface and some implementations for it
 
-```php
-interface Interviewer
-{
-    public function askQuestions();
+```javascript
+class Interviewer {
+    
+    askQuestions() {
+        console.log("I'm an interviewer");
+    }
+    
 }
 
-class Developer implements Interviewer
-{
-    public function askQuestions()
-    {
-        echo 'Asking about design patterns!';
+class Developer extends Interviewer {
+    
+    askQuestions() {
+        console.log("Asking about design patterns.");
     }
+    
 }
 
-class CommunityExecutive implements Interviewer
-{
-    public function askQuestions()
-    {
-        echo 'Asking about community building';
+class CommunityExecutive extends Interviewer {
+    
+    askQuestions() {
+        console.log("Asking about community building.");
     }
+    
 }
 ```
 
 Now let us create our `HiringManager`
 
-```php
-abstract class HiringManager
-{
-
-    // Factory method
-    abstract protected function makeInterviewer(): Interviewer;
-
-    public function takeInterview()
-    {
-        $interviewer = $this->makeInterviewer();
-        $interviewer->askQuestions();
+```javascript
+class HiringManager {
+    
+    constructor(makeInterviewer) {
+        // makeInterviewer is a factory method
+        if (!makeInterviewer) {
+            throw new Error("Param is required.");
+        }
+        this.interviewer = makeInterviewer();
     }
+    
+    takeInterview() {
+        this.interviewer.askQuestions();
+    }
+    
 }
 
 ```
 Now any child can extend it and provide the required interviewer
-```php
-class DevelopmentManager extends HiringManager
-{
-    protected function makeInterviewer(): Interviewer
-    {
-        return new Developer();
+```javascript
+class DevelopmentManager extends HiringManager {
+    
+    constructor() {
+        super(() => {
+            return new Developer();
+        });
     }
+    
 }
-
-class MarketingManager extends HiringManager
-{
-    protected function makeInterviewer(): Interviewer
-    {
-        return new CommunityExecutive();
+class MarketingManager extends HiringManager {
+    
+    constructor() {
+        super(() => {
+            return new CommunityExecutive();
+        });
     }
+    
 }
 ```
 and then it can be used as
 
-```php
-$devManager = new DevelopmentManager();
-$devManager->takeInterview(); // Output: Asking about design patterns
+```javascript
+const devManager = new DevelopmentManager();
+devManager.takeInterview(); // Output: Asking about design patterns
 
-$marketingManager = new MarketingManager();
-$marketingManager->takeInterview(); // Output: Asking about community building.
+const marketingManager = new MarketingManager();
+marketingManager.takeInterview(); // Output: Asking about community building.
 ```
 
 **When to use?**
