@@ -419,9 +419,9 @@ And then it can be used as:
 
 ```javascript
 const burger = new BurgerBuilder(14)
-                                    .addPepperoni()
-                                    .addCheese()
-                                    .build();
+                        .addPepperoni()
+                        .addCheese()
+                        .build();
 console.log(burger);
 ```
 
@@ -444,52 +444,43 @@ In short, it allows you to create a copy of an existing object and modify it to 
 
 **Programmatic Example**
 
-In PHP, it can be easily done using `clone`
+In JavaScript, it can be easily done using `Object.create()`
 
-```php
-class Sheep
-{
-    protected $name;
-    protected $category;
-
-    public function __construct(string $name, string $category = 'Mountain Sheep')
-    {
-        $this->name = $name;
-        $this->category = $category;
+```javascript
+class Sheep {
+    constructor(name, category = "Mountain Sheep") {
+        this.name = name;
+        this.category = category;
     }
-
-    public function setName(string $name)
-    {
-        $this->name = $name;
+    setName(name) {
+        this.name = name;
     }
-
-    public function getName()
-    {
-        return $this->name;
+    getName() {
+        return this.name;
     }
-
-    public function setCategory(string $category)
-    {
-        $this->category = $category;
+    setCategory(category) {
+        this.category = category;
     }
-
-    public function getCategory()
-    {
-        return $this->category;
+    getCategory() {
+        return this.category;
     }
 }
 ```
 Then it can be cloned like below
-```php
-$original = new Sheep('Jolly');
-echo $original->getName(); // Jolly
-echo $original->getCategory(); // Mountain Sheep
+```javascript
+const original = new Sheep("Jolly");
+console.log(original.getName()); // Jolly
+console.log(original.getCategory()); // Mountain Sheep
 
 // Clone and modify what is required
-$cloned = clone $original;
-$cloned->setName('Dolly');
-echo $cloned->getName(); // Dolly
-echo $cloned->getCategory(); // Mountain sheep
+const cloned = Object.create(original);
+cloned.setName("Dolly");
+console.log(cloned.getName()); // Dolly
+console.log(cloned.getCategory()); // Mountain Sheep
+
+// Take a look back to the original object
+console.log(original.getName()); // Jolly
+console.log(original.getCategory()); // Mountain Sheep
 ```
 
 Also you could use the magic method `__clone` to modify the cloning behavior.
@@ -514,42 +505,29 @@ Singleton pattern is actually considered an anti-pattern and overuse of it shoul
 **Programmatic Example**
 
 To create a singleton, make the constructor private, disable cloning, disable extension and create a static variable to house the instance
-```php
-final class President
-{
-    private static $instance;
-
-    private function __construct()
-    {
-        // Hide the constructor
+```javascript
+// in President.js file
+class President {
+    
+    constructor(name, country) {
+        this.name = name || "John Doe";
+        this.country = country || "JavaScript";
     }
-
-    public static function getInstance(): President
-    {
-        if (!self::$instance) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
-    }
-
-    private function __clone()
-    {
-        // Disable cloning
-    }
-
-    private function __wakeup()
-    {
-        // Disable unserialize
-    }
+    
 }
+
+const president = new President("Mary Lou");
+// Freeze the object to prevent modification
+Object.freeze(president);
+
+export default president;
 ```
 Then in order to use
-```php
-$president1 = President::getInstance();
-$president2 = President::getInstance();
+```javascript
+import president1 from "./President";
+import president2 from "./President";
 
-var_dump($president1 === $president2); // true
+console.log(president1 === president2); // true
 ```
 
 Structural Design Patterns
