@@ -651,82 +651,81 @@ Wikipedia says
 
 Translating our WebPage example from above. Here we have the `WebPage` hierarchy
 
-```php
-interface WebPage
-{
-    public function __construct(Theme $theme);
-    public function getContent();
+```javascript
+class Webpage {
+    
+    constructor(theme) {
+        if (!(theme instanceof Theme)) {
+            throw new TypeError("Param must be a Theme");
+        }
+        this.theme = theme;
+    }
+    
+    getContent() {
+        throw new Error("Override is missing");
+    }
+    
 }
 
-class About implements WebPage
-{
-    protected $theme;
-
-    public function __construct(Theme $theme)
-    {
-        $this->theme = $theme;
+class About extends Webpage {
+    
+    constructor(theme) {
+        super(theme);
     }
-
-    public function getContent()
-    {
-        return "About page in " . $this->theme->getColor();
+    
+    getContent() {
+        return `About page in ${this.theme.getColor()}`;
     }
+    
 }
 
-class Careers implements WebPage
-{
-    protected $theme;
-
-    public function __construct(Theme $theme)
-    {
-        $this->theme = $theme;
+class Careers extends Webpage {
+    
+    constructor(theme) {
+        super(theme);
     }
-
-    public function getContent()
-    {
-        return "Careers page in " . $this->theme->getColor();
+    
+    getContent() {
+        return `Careers page in ${this.theme.getColor()}`;
     }
+    
 }
 ```
 And the separate theme hierarchy
-```php
+```javascript
 
-interface Theme
-{
-    public function getColor();
-}
-
-class DarkTheme implements Theme
-{
-    public function getColor()
-    {
-        return 'Dark Black';
+class Theme {
+    
+    getColor() {
+        throw new Error("Override is missing");
     }
+    
 }
-class LightTheme implements Theme
-{
-    public function getColor()
-    {
-        return 'Off white';
-    }
+class DarkTheme extends Theme {
+    
+    getColor() { return "Dark black";}
+    
 }
-class AquaTheme implements Theme
-{
-    public function getColor()
-    {
-        return 'Light blue';
-    }
+class LightTheme extends Theme {
+    
+    getColor() {return "Off white";}
+    
+}
+class AquaTheme extends Theme {
+    
+    getColor() {return "Light blue";}
+    
 }
 ```
 And both the hierarchies
-```php
-$darkTheme = new DarkTheme();
+```javascript
+const darkTheme = new DarkTheme();
 
-$about = new About($darkTheme);
-$careers = new Careers($darkTheme);
+const about = new About(darkTheme);
+const careers = new Careers(darkTheme);
 
-echo $about->getContent(); // "About page in Dark Black";
-echo $careers->getContent(); // "Careers page in Dark Black";
+console.log(about.getContent()); // "About page in Dark Black";
+console.log(careers.getContent()); // "Careers page in Dark Black";
 ```
 
 🌿 Composite
