@@ -1126,64 +1126,67 @@ Wikipedia says
 
 Taking our security door example from above. Firstly we have the door interface and an implementation of door
 
-```php
-interface Door
-{
-    public function open();
-    public function close();
+```javascript
+class Door {
+    
+    open() {
+        throw new Error("Override is missing");
+    }
+    
+    close() {
+        throw new Error("Override is missing");
+    }
+    
 }
 
-class LabDoor implements Door
-{
-    public function open()
-    {
-        echo "Opening lab door";
+class LabDoor extends Door {
+    
+    open() {
+        console.log("Opening lab door");
     }
-
-    public function close()
-    {
-        echo "Closing the lab door";
+    
+    close() {
+        console.log("Closing the lab door");
     }
+    
 }
 ```
 Then we have a proxy to secure any doors that we want
-```php
-class Security
-{
-    protected $door;
-
-    public function __construct(Door $door)
-    {
-        $this->door = $door;
+```javascript
+class Security {
+    
+    constructor(door) {
+        if (!(door instanceof Door)) {
+            throw new TypeError();
+        }
+        this.door = door;
     }
 
-    public function open($password)
-    {
-        if ($this->authenticate($password)) {
-            $this->door->open();
+    open(password) {
+        if (this.authenticate(password)) {
+            this.door.open();
         } else {
-            echo "Big no! It ain't possible.";
+            console.log("Big no! It ain't possible.");
         }
     }
 
-    public function authenticate($password)
-    {
-        return $password === '$ecr@t';
+    authenticate(password) {
+        return password === "$ecr@t";
     }
 
-    public function close()
-    {
-        $this->door->close();
+    close() {
+        throw new Error("Override is missing");
+        this.door.close();
     }
 }
 ```
 And here is how it can be used
-```php
-$door = new Security(new LabDoor());
-$door->open('invalid'); // Big no! It ain't possible.
+```javascript
+const door = new Security(new LabDoor());
+door.open("invalid"); // Big no! It ain't possible.
 
-$door->open('$ecr@t'); // Opening lab door
-$door->close(); // Closing lab door
+door.open("$ecr@t"); // Opening lab door
+door.close(); // Closing lab door
 ```
 Yet another example would be some sort of data-mapper implementation. For example, I recently made an ODM (Object Data Mapper) for MongoDB using this pattern where I wrote a proxy around mongo classes while utilizing the magic method `__call()`. All the method calls were proxied to the original mongo class and result retrieved was returned as it is but in case of `find` or `findOne` data was mapped to the required class objects and the object was returned instead of `Cursor`.
 
