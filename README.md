@@ -963,77 +963,70 @@ Wikipedia says
 
 Taking our computer example from above. Here we have the computer class
 
-```php
-class Computer
-{
-    public function getElectricShock()
-    {
-        echo "Ouch!";
+```javascript
+class Computer {
+    
+    getElectricShock() {
+        console.log("Ouch!");
     }
 
-    public function makeSound()
-    {
-        echo "Beep beep!";
+    makeSound() {
+        console.log("Beep beep!");
     }
 
-    public function showLoadingScreen()
-    {
-        echo "Loading..";
+    showLoadingScreen() {
+        console.log("Loading..");
     }
 
-    public function bam()
-    {
-        echo "Ready to be used!";
+    bam() {
+        console.log("Ready to be used!");
     }
 
-    public function closeEverything()
-    {
-        echo "Bup bup bup buzzzz!";
+    closeEverything() {
+        console.log("Bup bup bup buzzzz!");
     }
 
-    public function sooth()
-    {
-        echo "Zzzzz";
+    sooth() {
+        console.log("Zzzzz");
     }
 
-    public function pullCurrent()
-    {
-        echo "Haaah!";
+    pullCurrent() {
+        console.log("Haaah!");
     }
+
 }
 ```
 Here we have the facade
-```php
-class ComputerFacade
-{
-    protected $computer;
-
-    public function __construct(Computer $computer)
-    {
-        $this->computer = $computer;
+```javascript
+class ComputerFacade {
+    
+    constructor(computer) {
+        if (!(computer instanceof Computer)) {
+            throw new TypeError("Param must be a Computer");
+        }
+        this.computer = computer;
     }
 
-    public function turnOn()
-    {
-        $this->computer->getElectricShock();
-        $this->computer->makeSound();
-        $this->computer->showLoadingScreen();
-        $this->computer->bam();
+    turnOn() {
+        this.computer.getElectricShock();
+        this.computer.makeSound();
+        this.computer.showLoadingScreen();
+        this.computer.bam();
     }
 
-    public function turnOff()
-    {
-        $this->computer->closeEverything();
-        $this->computer->pullCurrent();
-        $this->computer->sooth();
+    turnOff() {
+        this.computer.closeEverything();
+        this.computer.pullCurrent();
+        this.computer.sooth();
     }
+    
 }
 ```
 Now to use the facade
-```php
-$computer = new ComputerFacade(new Computer());
-$computer->turnOn(); // Ouch! Beep beep! Loading.. Ready to be used!
-$computer->turnOff(); // Bup bup buzzz! Haah! Zzzzz
+```javascript
+const computer = new ComputerFacade(new Computer());
+computer.turnOn(); // Ouch! Beep beep! Loading.. Ready to be used!
+computer.turnOff(); // Bup bup buzzz! Haah! Zzzzz
 ```
 
 🍃 Flyweight
