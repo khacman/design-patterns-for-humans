@@ -1045,69 +1045,70 @@ Wikipedia says
 
 Translating our tea example from above. First of all we have tea types and tea maker
 
-```php
+```javascript
 // Anything that will be cached is flyweight.
 // Types of tea here will be flyweights.
-class KarakTea
-{
-}
+class KarakTea {}
 
 // Acts as a factory and saves the tea
-class TeaMaker
-{
-    protected $availableTea = [];
-
-    public function make($preference)
-    {
-        if (empty($this->availableTea[$preference])) {
-            $this->availableTea[$preference] = new KarakTea();
-        }
-
-        return $this->availableTea[$preference];
+class TeaMaker {
+    
+    constructor() {
+        this.availableTea = new Map();
     }
+    
+    make(preference) {
+        if (!this.availableTea.get(preference)) {
+            this.availableTea.set(preference, new KarakTea());
+        }
+        return this.availableTea.get(preference);
+    }
+    
 }
 ```
 
 Then we have the `TeaShop` which takes orders and serves them
 
-```php
-class TeaShop
-{
-    protected $orders;
-    protected $teaMaker;
-
-    public function __construct(TeaMaker $teaMaker)
-    {
-        $this->teaMaker = $teaMaker;
+```javascript
+class TeaShop {
+    
+    constructor(teaMaker) {
+        if (!(teaMaker instanceof TeaMaker)) {
+            throw new TypeError();
+        }
+        this.orders = new Map();
+        this.teaMaker = teaMaker;
     }
 
-    public function takeOrder(string $teaType, int $table)
-    {
-        $this->orders[$table] = $this->teaMaker->make($teaType);
+    takeOrder(teaType, table) {
+        this.orders.set(table, this.teaMaker.make(teaType));
     }
 
-    public function serve()
-    {
-        foreach ($this->orders as $table => $tea) {
-            echo "Serving tea to table# " . $table;
+    serve() {
+        for (const order of this.orders) {
+            console.log(`Serving tea to table# ${order[0]}`);
         }
     }
+    
 }
 ```
 And it can be used as below
 
-```php
-$teaMaker = new TeaMaker();
-$shop = new TeaShop($teaMaker);
+```javascript
+const teaMaker = new TeaMaker();
+const shop = new TeaShop(teaMaker);
 
-$shop->takeOrder('less sugar', 1);
-$shop->takeOrder('more milk', 2);
-$shop->takeOrder('without sugar', 5);
+shop.takeOrder("less sugar", 1);
+shop.takeOrder("more milk", 2);
+shop.takeOrder("without sugar", 5);
+// This time, the shop will get "more milk" tea in the availableTea map
+shop.takeOrder("more milk", 7);
 
-$shop->serve();
+shop.serve();
 // Serving tea to table# 1
 // Serving tea to table# 2
 // Serving tea to table# 5
+// Serving tea to table# 7
 ```
 
 🎱 Proxy
