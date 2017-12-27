@@ -1440,96 +1440,39 @@ Wikipedia says
 
 **Programmatic example**
 
-In PHP it is quite easy to implement using SPL (Standard PHP Library). Translating our radio stations example from above. First of all we have `RadioStation`
+In JavaScript it is very easy to implement using Set (an iterable object). Translating our radio stations example from above. First of all we have `RadioStation`
 
-```php
-class RadioStation
-{
-    protected $frequency;
+```javascript
+class RadioStation {
 
-    public function __construct(float $frequency)
-    {
-        $this->frequency = $frequency;
+    constructor(frequency) {
+        this.frequency = frequency;
     }
 
-    public function getFrequency(): float
-    {
-        return $this->frequency;
-    }
+    getFrequency() {return this.frequency;}
+
 }
 ```
-Then we have our iterator
 
-```php
-use Countable;
-use Iterator;
-
-class StationList implements Countable, Iterator
-{
-    /** @var RadioStation[] $stations */
-    protected $stations = [];
-
-    /** @var int $counter */
-    protected $counter;
-
-    public function addStation(RadioStation $station)
-    {
-        $this->stations[] = $station;
-    }
-
-    public function removeStation(RadioStation $toRemove)
-    {
-        $toRemoveFrequency = $toRemove->getFrequency();
-        $this->stations = array_filter($this->stations, function (RadioStation $station) use ($toRemoveFrequency) {
-            return $station->getFrequency() !== $toRemoveFrequency;
-        });
-    }
-
-    public function count(): int
-    {
-        return count($this->stations);
-    }
-
-    public function current(): RadioStation
-    {
-        return $this->stations[$this->counter];
-    }
-
-    public function key()
-    {
-        return $this->counter;
-    }
-
-    public function next()
-    {
-        $this->counter++;
-    }
-
-    public function rewind()
-    {
-        $this->counter = 0;
-    }
-
-    public function valid(): bool
-    {
-        return isset($this->stations[$this->counter]);
-    }
-}
-```
 And then it can be used as
-```php
-$stationList = new StationList();
+```javascript
+const stationList = new Set();
 
-$stationList->addStation(new RadioStation(89));
-$stationList->addStation(new RadioStation(101));
-$stationList->addStation(new RadioStation(102));
-$stationList->addStation(new RadioStation(103.2));
+const rs89 = new RadioStation(89);
+const rs101 = new RadioStation(101);
+const rs102 = new RadioStation(102);
+const rs103p2 = new RadioStation(103.2);
 
-foreach($stationList as $station) {
-    echo $station->getFrequency() . PHP_EOL;
+stationList.add(rs89);
+stationList.add(rs101);
+stationList.add(rs102);
+stationList.add(rs103p2);
+
+for (let station of stationList) {
+    console.log(station.getFrequency());
 }
 
-$stationList->removeStation(new RadioStation(89)); // Will remove station 89
+stationList.delete(rs89); // Will remove station 89
 ```
 
 👽 Mediator
