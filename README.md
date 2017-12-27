@@ -839,107 +839,112 @@ Wikipedia says
 
 Lets take coffee for example. First of all we have a simple coffee implementing the coffee interface
 
-```php
-interface Coffee
-{
-    public function getCost();
-    public function getDescription();
+```javascript
+class Coffee {
+    
+    getCost() {
+        throw new Error("Override is missing");
+    }
+    
+    getDescription(){
+        throw new Error("Override is missing");
+    }
+    
 }
 
-class SimpleCoffee implements Coffee
-{
-    public function getCost()
-    {
+class SimpleCoffee extends Coffee {
+    
+    getCost() {
         return 10;
     }
-
-    public function getDescription()
-    {
-        return 'Simple coffee';
+    
+    getDescription() {
+        return "Simple coffee";
     }
+    
 }
 ```
 We want to make the code extensible to allow options to modify it if required. Lets make some add-ons (decorators)
-```php
-class MilkCoffee implements Coffee
-{
-    protected $coffee;
-
-    public function __construct(Coffee $coffee)
-    {
-        $this->coffee = $coffee;
+```javascript
+class MilkCofee extends Coffee {
+    
+    constructor(coffee) {
+        if (!(coffee instanceof Coffee)) {
+            throw new TypeError();
+        }
+        super();
+        this.coffee = coffee;
     }
-
-    public function getCost()
-    {
-        return $this->coffee->getCost() + 2;
+    
+    getCost() {
+        return this.coffee.getCost() + 2;
     }
-
-    public function getDescription()
-    {
-        return $this->coffee->getDescription() . ', milk';
+    
+    getDescription() {
+        return `${this.coffee.getDescription()}, and milk`;
     }
+    
 }
 
-class WhipCoffee implements Coffee
-{
-    protected $coffee;
-
-    public function __construct(Coffee $coffee)
-    {
-        $this->coffee = $coffee;
+class WhipCofefee extends Coffee {
+    
+    constructor(coffee) {
+        if (!(coffee instanceof Coffee)) {
+            throw new TypeError();
+        }
+        super();
+        this.coffee = coffee;
     }
-
-    public function getCost()
-    {
-        return $this->coffee->getCost() + 5;
+    
+    getCost() {
+        return this.coffee.getCost() + 5;
     }
-
-    public function getDescription()
-    {
-        return $this->coffee->getDescription() . ', whip';
+    
+    getDescription() {
+        return `${this.coffee.getDescription()}, and whip`;
     }
+    
 }
 
-class VanillaCoffee implements Coffee
-{
-    protected $coffee;
-
-    public function __construct(Coffee $coffee)
-    {
-        $this->coffee = $coffee;
+class VanillaCofefee extends Coffee {
+    
+    constructor(coffee) {
+        if (!(coffee instanceof Coffee)) {
+            throw new TypeError("Param must be an instance of Coffee");
+        }
+        super();
+        this.coffee = coffee;
     }
-
-    public function getCost()
-    {
-        return $this->coffee->getCost() + 3;
+    
+    getCost() {
+        return this.coffee.getCost() + 3;
     }
-
-    public function getDescription()
-    {
-        return $this->coffee->getDescription() . ', vanilla';
+    
+    getDescription() {
+        return `${this.coffee.getDescription()}, and vanilla`;
     }
+    
 }
 ```
 
 Lets make a coffee now
 
-```php
-$someCoffee = new SimpleCoffee();
-echo $someCoffee->getCost(); // 10
-echo $someCoffee->getDescription(); // Simple Coffee
+```javascript
+let someCoffee = new SimpleCoffee();
+console.log(someCoffee.getCost()); // 10
+console.log(someCoffee.getDescription()); // Simple Coffee
 
-$someCoffee = new MilkCoffee($someCoffee);
-echo $someCoffee->getCost(); // 12
-echo $someCoffee->getDescription(); // Simple Coffee, milk
+someCoffee = new MilkCofee(someCoffee);
+console.log(someCoffee.getCost()); // 12
+console.log(someCoffee.getDescription()); // Simple Coffee, milk
 
-$someCoffee = new WhipCoffee($someCoffee);
-echo $someCoffee->getCost(); // 17
-echo $someCoffee->getDescription(); // Simple Coffee, milk, whip
+someCoffee = new WhipCofefee(someCoffee);
+console.log(someCoffee.getCost()); // 17
+console.log(someCoffee.getDescription()); // Simple Coffee, milk, whip
 
-$someCoffee = new VanillaCoffee($someCoffee);
-echo $someCoffee->getCost(); // 20
-echo $someCoffee->getDescription(); // Simple Coffee, milk, whip, vanilla
+someCoffee = new VanillaCofefee(someCoffee);
+console.log(someCoffee.getCost()); // 20
+console.log(someCoffee.getDescription()); // Simple Coffee, milk, whip, vanilla
 ```
 
 📦 Facade
