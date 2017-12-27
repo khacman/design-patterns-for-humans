@@ -1175,7 +1175,6 @@ class Security {
     }
 
     close() {
-        throw new Error("Override is missing");
         this.door.close();
     }
 }
