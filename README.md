@@ -1255,24 +1255,31 @@ class Account {
     canPay(amount) {
         return this.balance >= amount;
     }
+    
 }
 
 class Bank extends Account {
+    
     constructor(balance) {
         super(balance);
     }
+    
 }
 
 class Paypal extends Account {
+    
     constructor(balance) {
         super(balance);
     }
+    
 }
 
 class Bitcoin extends Account {
+    
     constructor(balance) {
         super(balance);
     }
+    
 }
 ```
 
@@ -1280,7 +1287,7 @@ Now let's prepare the chain using the links defined above (i.e. Bank, Paypal, Bi
 
 ```javascript
 // Let's prepare a chain like below
-//      $bank->$paypal->$bitcoin
+//      bank->paypal->bitcoin
 //
 // First priority bank
 //      If bank can't pay then paypal
@@ -1319,102 +1326,102 @@ Wikipedia says
 **Programmatic Example**
 
 First of all we have the receiver that has the implementation of every action that could be performed
-```php
+```javascript
 // Receiver
-class Bulb
-{
-    public function turnOn()
-    {
-        echo "Bulb has been lit";
+class Bulb {
+
+    turnOn() {
+        console.log("Bulb has been lit!");
     }
 
-    public function turnOff()
-    {
-        echo "Darkness!";
+    turnOff() {
+        console.log("Darkness!");
     }
+
 }
 ```
 then we have an interface that each of the commands are going to implement and then we have a set of commands
-```php
-interface Command
-{
-    public function execute();
-    public function undo();
-    public function redo();
+```javascript
+class Command {
+    constructor(bulb) {
+        if (!(bulb instanceof Bulb)) {
+            throw new TypeError();
+        }
+        this.bulb = bulb;
+    }
+    execute() {
+        throw new Error("Override is missing");
+    }
+    undo() {
+        throw new Error("Override is missing");
+    }
+    redo() {
+        throw new Error("Override is missing");
+    }
 }
 
 // Command
-class TurnOn implements Command
-{
-    protected $bulb;
+class TurnOn extends Command {
 
-    public function __construct(Bulb $bulb)
-    {
-        $this->bulb = $bulb;
+    constructor(bulb) {
+        super(bulb);
     }
 
-    public function execute()
-    {
-        $this->bulb->turnOn();
+    execute() {
+        this.bulb.turnOn();
     }
 
-    public function undo()
-    {
-        $this->bulb->turnOff();
+    undo() {
+        this.bulb.turnOff();
     }
 
-    public function redo()
-    {
-        $this->execute();
+    redo() {
+        this.bulb.execute();
     }
+
 }
 
-class TurnOff implements Command
-{
-    protected $bulb;
+class TurnOff extends Command {
 
-    public function __construct(Bulb $bulb)
-    {
-        $this->bulb = $bulb;
+    constructor(bulb) {
+        super(bulb);
     }
 
-    public function execute()
-    {
-        $this->bulb->turnOff();
+    execute() {
+        this.bulb.turnOff();
     }
 
-    public function undo()
-    {
-        $this->bulb->turnOn();
+    undo() {
+        this.bulb.turnOn();
     }
 
-    public function redo()
-    {
-        $this->execute();
+    redo() {
+        this.bulb.execute();
     }
+
 }
 ```
 Then we have an `Invoker` with whom the client will interact to process any commands
-```php
+```javascript
 // Invoker
-class RemoteControl
-{
-    public function submit(Command $command)
-    {
-        $command->execute();
+class RemoteControl {
+
+    submit(command) {
+        command.execute();
     }
+
 }
 ```
 Finally let's see how we can use it in our client
-```php
-$bulb = new Bulb();
+```javascript
+const bulb = new Bulb();
 
-$turnOn = new TurnOn($bulb);
-$turnOff = new TurnOff($bulb);
+const turnOn = new TurnOn(bulb);
+const turnOff = new TurnOff(bulb);
 
-$remote = new RemoteControl();
-$remote->submit($turnOn); // Bulb has been lit!
-$remote->submit($turnOff); // Darkness!
+const remote = new RemoteControl();
+remote.submit(turnOn); // Bulb has been lit!
+remote.submit(turnOff); // Darkness!
 ```
 
 Command pattern can also be used to implement a transaction based system. Where you keep maintaining the history of commands as soon as you execute them. If the final command is successfully executed, all good otherwise just iterate through the history and keep executing the `undo` on all the executed commands.
