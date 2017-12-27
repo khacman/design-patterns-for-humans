@@ -744,121 +744,82 @@ Wikipedia says
 
 Taking our employees example from above. Here we have different employee types
 
-```php
-interface Employee
-{
-    public function __construct(string $name, float $salary);
-    public function getName(): string;
-    public function setSalary(float $salary);
-    public function getSalary(): float;
-    public function getRoles(): array;
-}
-
-class Developer implements Employee
-{
-    protected $salary;
-    protected $name;
-    protected $roles;
+```javascript
+class Employee {
     
-    public function __construct(string $name, float $salary)
-    {
-        $this->name = $name;
-        $this->salary = $salary;
+    constructor(name, salary) {
+        this.name = name;
+        this.salary = salary;
     }
-
-    public function getName(): string
-    {
-        return $this->name;
+    
+    getName() {return this.name;}
+    
+    setSalary(salary) {
+        this.salary = salary;
     }
-
-    public function setSalary(float $salary)
-    {
-        $this->salary = $salary;
-    }
-
-    public function getSalary(): float
-    {
-        return $this->salary;
-    }
-
-    public function getRoles(): array
-    {
-        return $this->roles;
-    }
+    
+    getSalary(){ return this.salary;}
+    
 }
 
-class Designer implements Employee
-{
-    protected $salary;
-    protected $name;
-    protected $roles;
-
-    public function __construct(string $name, float $salary)
-    {
-        $this->name = $name;
-        $this->salary = $salary;
+class Developer extends Employee {
+    
+    constructor(name, salary) {
+        super(name, salary);
     }
-
-    public function getName(): string
-    {
-        return $this->name;
+    
+}
+class Designer extends Employee {
+    
+    constructor(name, salary) {
+        super(name, salary);
     }
-
-    public function setSalary(float $salary)
-    {
-        $this->salary = $salary;
-    }
-
-    public function getSalary(): float
-    {
-        return $this->salary;
-    }
-
-    public function getRoles(): array
-    {
-        return $this->roles;
-    }
+    
+    
 }
 ```
 
 Then we have an organization which consists of several different types of employees
 
-```php
-class Organization
-{
-    protected $employees;
-
-    public function addEmployee(Employee $employee)
-    {
-        $this->employees[] = $employee;
+```javascript
+class Organization {
+    
+    constructor() {
+        this.employees = [];
     }
-
-    public function getNetSalaries(): float
-    {
-        $netSalary = 0;
-
-        foreach ($this->employees as $employee) {
-            $netSalary += $employee->getSalary();
+    
+    addEmployee(employee) {
+        if (!(employee instanceof Employee)) {
+            throw new TypeError();
         }
-
-        return $netSalary;
+        
+        this.employees.push(employee);
     }
+    
+    getNetSalaries() {
+        let netSalary = 0;
+        for (let employee of this.employees) {
+            netSalary += employee.getSalary();
+        }
+        return netSalary;
+    }
+    
 }
 ```
 
 And then it can be used as
 
-```php
+```javascript
 // Prepare the employees
-$john = new Developer('John Doe', 12000);
-$jane = new Designer('Jane Doe', 15000);
+const john = new Developer("John Doe", 12000);
+const mary = new Designer("Mary Lou", 15000);
 
 // Add them to organization
-$organization = new Organization();
-$organization->addEmployee($john);
-$organization->addEmployee($jane);
+const organization = new Organization();
+organization.addEmployee(john);
+organization.addEmployee(mary);
 
-echo "Net salaries: " . $organization->getNetSalaries(); // Net Salaries: 27000
+console.log(`Net salaries: ${organization.getNetSalaries()}`); // Net Salaries: 27000
 ```
 
 ☕ Decorator
