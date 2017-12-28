@@ -1469,7 +1469,11 @@ stationList.add(rs101);
 stationList.add(rs102);
 stationList.add(rs103p2);
 
-for (let station of stationList) {
+// Iterator
+const stationsIterator = stationList.values();
+
+for (let i = 0; i < stationList.size; i++) {
+    const station = stationsIterator.next().value;
     console.log(station.getFrequency());
 }
 
