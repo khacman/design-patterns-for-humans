@@ -164,42 +164,43 @@ Now let us create our `HiringManager`
 
 ```javascript
 class HiringManager {
-    
-    constructor(makeInterviewer) {
-        // makeInterviewer is a factory method
-        if (!makeInterviewer) {
-            throw new Error("Param is required.");
-        }
-        this.interviewer = makeInterviewer();
-    }
-    
+
     takeInterview() {
         this.interviewer.askQuestions();
     }
-    
+
 }
 
 ```
 Now any child can extend it and provide the required interviewer
 ```javascript
+
 class DevelopmentManager extends HiringManager {
-    
+
     constructor() {
-        super(() => {
+        super();
+        // Factory method
+        function makeInterviewer() {
             return new Developer();
-        });
+        }
+        this.interviewer = makeInterviewer() ;
     }
-    
+
 }
+
 class MarketingManager extends HiringManager {
-    
+
     constructor() {
-        super(() => {
+        super();
+        // Factory method
+        function makeInterviewer() {
             return new CommunityExecutive();
-        });
+        }
+        this.interviewer = makeInterviewer();
     }
-    
+
 }
+
 ```
 and then it can be used as
 
