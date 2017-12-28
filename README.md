@@ -1647,79 +1647,83 @@ Wikipedia says
 **Programmatic example**
 
 Translating our example from above. First of all we have job seekers that need to be notified for a job posting
-```php
-class JobPost
-{
-    protected $title;
+```javascript
+class JobPost {
 
-    public function __construct(string $title)
-    {
-        $this->title = $title;
+    constructor(title) {
+        this.title = title;
     }
 
-    public function getTitle()
-    {
-        return $this->title;
-    }
 }
 
-class JobSeeker implements Observer
-{
-    protected $name;
+class JobSeeker {
 
-    public function __construct(string $name)
-    {
-        $this->name = $name;
+    constructor(name) {
+        this.name = name;
     }
 
-    public function onJobPosted(JobPost $job)
-    {
-        // Do something with the job posting
-        echo 'Hi ' . $this->name . '! New job posted: '. $job->getTitle();
+    onJobPosted(job) {
+        if (!(job instanceof JobPost)) {
+            throw new TypeError();
+        }
+        console.log(`Hi ${this.name}! New job posted: ${job.title}`);
     }
+
 }
 ```
 Then we have our job postings to which the job seekers will subscribe
-```php
-class JobPostings implements Observable
-{
-    protected $observers = [];
+```javascript
+class JobPostings {
 
-    protected function notify(JobPost $jobPosting)
-    {
-        foreach ($this->observers as $observer) {
-            $observer->onJobPosted($jobPosting);
+    constructor() {
+        this.observers = new Set();
+    }
+
+    notify(jobPosting) {
+        if (!(jobPosting instanceof JobPost)) {
+            throw new TypeError();
         }
+
+        this.observers.forEach((observer) => {
+            observer.onJobPosted(jobPosting);
+        });
     }
 
-    public function attach(Observer $observer)
-    {
-        $this->observers[] = $observer;
+    attach(observer) {
+        if (!(observer instanceof JobSeeker)) {
+            throw new TypeError();
+        }
+
+        this.observers.add(observer);
     }
 
-    public function addJob(JobPost $jobPosting)
-    {
-        $this->notify($jobPosting);
+    addJob(jobPosting) {
+        if (!(jobPosting instanceof JobPost)) {
+            throw new TypeError();
+        }
+
+        this.notify(jobPosting);
     }
+
 }
 ```
 Then it can be used as
-```php
+```javascript
 // Create subscribers
-$johnDoe = new JobSeeker('John Doe');
-$janeDoe = new JobSeeker('Jane Doe');
+const john = new JobSeeker("John Doe");
+const mary = new JobSeeker("Mary Lou");
 
 // Create publisher and attach subscribers
-$jobPostings = new JobPostings();
-$jobPostings->attach($johnDoe);
-$jobPostings->attach($janeDoe);
+const jobPostings = new JobPostings();
+jobPostings.attach(john);
+jobPostings.attach(mary);
 
 // Add a new job and see if subscribers get notified
-$jobPostings->addJob(new JobPost('Software Engineer'));
+jobPostings.addJob(new JobPost("Software Engineer"));
 
 // Output
 // Hi John Doe! New job posted: Software Engineer
-// Hi Jane Doe! New job posted: Software Engineer
+// Hi Mary Lou! New job posted: Software Engineer
 ```
 
 🏃 Visitor
