@@ -1,3 +1,4 @@
+
 ![Design Patterns For Humans](https://cloud.githubusercontent.com/assets/11269635/23065273/1b7e5938-f515-11e6-8dd3-d0d58de6bb9a.png)
 
 ***
@@ -39,8 +40,31 @@ Types of Design Patterns
 -----------------
 
 * [Creational](#creational-design-patterns)
+	 * [Simple Factory](#-simple-factory)
+	 * [Factory Method](#-factory-method)
+	 * [Abstract Factory](#-abstract-factory)
+	 * [Builder](#-builder)
+	 * [Prototype](#-prototype)
+	 * [Singleton](#-singleton)
 * [Structural](#structural-design-patterns)
+	* [Adapter](#-adapter)
+	* [Bridge](#-bridge)
+	* [Composite](#-composite)
+	* [Decorator](#-decorator)
+	* [Facade](#-facade)
+	* [Flyweight](#-flyweight)
+	* [Proxy](#-proxy)
 * [Behavioral](#behavioral-design-patterns)
+	* [Chain of Responsibility](#-chain-of-responsibility)
+	* [Command](#-command)
+	* [Iterator](#-iterator)
+	* [Mediator](#-mediator)
+	* [Memento](#-memento)
+	* [Observer](#-observer)
+	* [Visitor](#-visitor)
+	* [Strategy](#-strategy)
+	* [State](#-state)
+	* [Template Method](#-template-method)
 
 Creational Design Patterns
 ==========================
@@ -117,6 +141,8 @@ console.log(`Height: ${woodenDoor.getHeight()}`);
 **When to Use?**
 
 When creating an object is not just a few assignments and involves some logic, it makes sense to put it in a dedicated factory instead of repeating the same code everywhere.
+
+[**Back to top**](#types-of-design-patterns)
 
 🏭 Factory Method
 --------------
@@ -215,6 +241,8 @@ marketingManager.takeInterview(); // Output: Asking about community building.
 **When to use?**
 
 Useful when there is some generic processing in a class but the required sub-class is dynamically decided at runtime. Or putting it in other words, when the client doesn't know what exact sub-class it might need.
+
+[**Back to top**](#types-of-design-patterns)
 
 🔨 Abstract Factory
 ----------------
@@ -333,6 +361,8 @@ As you can see the wooden door factory has encapsulated the `carpenter` and the 
 
 When there are interrelated dependencies with not-that-simple creation logic involved
 
+[**Back to top**](#types-of-design-patterns)
+
 👷 Builder
 --------------------------------------------
 Real world example
@@ -430,6 +460,8 @@ console.log(burger);
 
 When there could be several flavors of an object and to avoid the constructor telescoping. The key difference from the factory pattern is that; factory pattern is to be used when the creation is a one step process while builder pattern is to be used when the creation is a multi step process.
 
+[**Back to top**](#types-of-design-patterns)
+
 🐑 Prototype
 ------------
 Real world example
@@ -490,6 +522,8 @@ If you want to understand the mechanism behind Object.create() magic, checkout [
 
 When an object is required that is similar to existing object or when the creation would be expensive as compared to cloning.
 
+[**Back to top**](#types-of-design-patterns)
+
 💍 Singleton
 ------------
 Real world example
@@ -530,6 +564,8 @@ import president2 from "./President";
 
 console.log(president1 === president2); // true
 ```
+
+[**Back to top**](#types-of-design-patterns)
 
 Structural Design Patterns
 ==========================
@@ -635,6 +671,8 @@ const hunter = new Hunter();
 hunter.hunt(wildDogAdapter);
 ```
 
+[**Back to top**](#types-of-design-patterns)
+
 🚡 Bridge
 ------
 Real world example
@@ -729,6 +767,8 @@ console.log(about.getContent()); // "About page in Dark Black";
 console.log(careers.getContent()); // "Careers page in Dark Black";
 ```
 
+[**Back to top**](#types-of-design-patterns)
+
 🌿 Composite
 -----------------
 
@@ -822,6 +862,8 @@ organization.addEmployee(mary);
 
 console.log(`Net salaries: ${organization.getNetSalaries()}`); // Net Salaries: 27000
 ```
+
+[**Back to top**](#types-of-design-patterns)
 
 ☕ Decorator
 -------------
@@ -948,6 +990,8 @@ console.log(someCoffee.getCost()); // 20
 console.log(someCoffee.getDescription()); // Simple Coffee, milk, whip, vanilla
 ```
 
+[**Back to top**](#types-of-design-patterns)
+
 📦 Facade
 ----------------
 
@@ -1029,6 +1073,8 @@ const computer = new ComputerFacade(new Computer());
 computer.turnOn(); // Ouch! Beep beep! Loading.. Ready to be used!
 computer.turnOff(); // Bup bup buzzz! Haah! Zzzzz
 ```
+
+[**Back to top**](#types-of-design-patterns)
 
 🍃 Flyweight
 ---------
@@ -1112,6 +1158,8 @@ shop.serve();
 // Serving tea to table# 7
 ```
 
+[**Back to top**](#types-of-design-patterns)
+
 🎱 Proxy
 -------------------
 Real world example
@@ -1189,6 +1237,8 @@ door.open("$ecr@t"); // Opening lab door
 door.close(); // Closing lab door
 ```
 Yet another example would be some sort of data-mapper implementation. For example, I recently made an ODM (Object Data Mapper) for MongoDB using this pattern where I wrote a proxy around mongo classes while utilizing the magic method `__call()`. All the method calls were proxied to the original mongo class and result retrieved was returned as it is but in case of `find` or `findOne` data was mapped to the required class objects and the object was returned instead of `Cursor`.
+
+[**Back to top**](#types-of-design-patterns)
 
 Behavioral Design Patterns
 ==========================
@@ -1311,6 +1361,8 @@ bank.pay(259);
 // Paid 259 using Bitcoin!
 ```
 
+[**Back to top**](#types-of-design-patterns)
+
 👮 Command
 -------
 
@@ -1427,6 +1479,8 @@ remote.submit(turnOff); // Darkness!
 
 Command pattern can also be used to implement a transaction based system. Where you keep maintaining the history of commands as soon as you execute them. If the final command is successfully executed, all good otherwise just iterate through the history and keep executing the `undo` on all the executed commands.
 
+[**Back to top**](#types-of-design-patterns)
+
 ➿ Iterator
 --------
 
@@ -1479,6 +1533,8 @@ for (let i = 0; i < stationList.size; i++) {
 
 stationList.delete(rs89); // Will remove station 89
 ```
+
+[**Back to top**](#types-of-design-patterns)
 
 👽 Mediator
 ========
@@ -1552,6 +1608,8 @@ setTimeout(() => {
 // 2017-12-27T18:16:51.438Z [John Doe]: Hi there!
 // 2017-12-27T18:16:52.443Z [Mary Lou]: Hey!
 ```
+
+[**Back to top**](#types-of-design-patterns)
 
 💾 Memento
 -------
@@ -1632,6 +1690,8 @@ editor.retstore(saved);
 
 console.log(editor.content); // This is the first sentence. This is second.
 ```
+
+[**Back to top**](#types-of-design-patterns)
 
 😎 Observer
 --------
@@ -1725,6 +1785,8 @@ jobPostings.addJob(new JobPost("Software Engineer"));
 // Hi John Doe! New job posted: Software Engineer
 // Hi Mary Lou! New job posted: Software Engineer
 ```
+
+[**Back to top**](#types-of-design-patterns)
 
 🏃 Visitor
 -------
@@ -1865,6 +1927,8 @@ $dolphin->accept($speak);  // Tuut tutt tuutt!
 $dolphin->accept($jump);   // Walked on water a little and disappeared
 ```
 
+[**Back to top**](#types-of-design-patterns)
+
 💡 Strategy
 --------
 
@@ -1937,6 +2001,8 @@ $sorter->sort($dataset); // Output : Sorting using bubble sort
 $sorter = new Sorter(new QuickSortStrategy());
 $sorter->sort($dataset); // Output : Sorting using quick sort
 ```
+
+[**Back to top**](#types-of-design-patterns)
 
 💢 State
 -----
@@ -2031,6 +2097,8 @@ $editor->type('Fifth line');
 // fourth line
 // fifth line
 ```
+
+[**Back to top**](#types-of-design-patterns)
 
 📒 Template Method
 ---------------
@@ -2146,6 +2214,8 @@ $iosBuilder->build();
 // Deploying ios build to server
 ```
 
+[**Back to top**](#types-of-design-patterns)
+
 ## 🚦 Wrap Up Folks
 
 And that about wraps it up. I will continue to improve this, so you might want to watch/star this repository to revisit. Also, I have plans on writing the same about the architectural patterns, stay tuned for it.
@@ -2164,3 +2234,5 @@ And that about wraps it up. I will continue to improve this, so you might want t
 ## License
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+
+[**Back to top**](#types-of-design-patterns)
